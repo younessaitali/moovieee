@@ -1,8 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import trending from "../views/trending.vue";
-import discovery from "../views/discovery.vue";
+import display from "../views/display.vue";
 import Vuesax from "vuesax";
 
 import "vuesax/dist/vuesax.css";
@@ -10,8 +9,7 @@ Vue.use(Vuesax);
 
 Vue.use(VueRouter);
 
-const routes = [
-  {
+const routes = [{
     path: "/",
     name: "home",
     component: Home
@@ -19,12 +17,12 @@ const routes = [
   {
     path: "/discovery",
     name: "discovery",
-    component: discovery
+    component: display
   },
   {
     path: "/trending",
     name: "trending",
-    component: trending
+    component: display
   }
 ];
 

@@ -4,9 +4,8 @@ import router from "./router";
 import axios from "axios";
 
 const http = axios.create({
-  baseURL: process.env.BACKEND_URL
-    ? process.env.BACKEND_URL
-    : "https://api.themoviedb.org/"
+  baseURL: process.env.BACKEND_URL ?
+    process.env.BACKEND_URL : "https://api.themoviedb.org/"
 });
 
 Vue.prototype.$http = http;

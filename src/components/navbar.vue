@@ -8,15 +8,17 @@
 			class="nabarx"
 		>
 			<div slot="title">
-				<vs-navbar-title>
-					<img class="navbrand" src="../assets/images/logo.png" />
-				</vs-navbar-title>
+				<router-link to="/">
+					<vs-navbar-title>
+						<img class="navbrand" src="../assets/images/logo.png" />
+					</vs-navbar-title>
+				</router-link>
 			</div>
 			<vs-navbar-item index="0">
 				<router-link to="/">Home</router-link>
 			</vs-navbar-item>
 			<vs-navbar-item index="1">
-				<router-link to="/discovery">Discovery</router-link>
+				<router-link to="/discovery">Popular Movies</router-link>
 			</vs-navbar-item>
 			<vs-navbar-item index="2">
 				<router-link to="/trending">Trending</router-link>

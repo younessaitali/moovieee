@@ -12,12 +12,13 @@
 </template>
 
 <script>
+const image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/";
 export default {
 	name: "movie-card",
 	props: ["src", "title"],
 	computed: {
-		imagePath: function() {
-			return this.src;
+		imagePath() {
+			return image + this.src;
 		}
 	}
 };
