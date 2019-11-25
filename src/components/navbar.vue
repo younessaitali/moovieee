@@ -23,6 +23,9 @@
 			<vs-navbar-item index="2">
 				<router-link to="/trending">Trending</router-link>
 			</vs-navbar-item>
+			<vs-navbar-item index="3">
+				<router-link to="/browse-movies">Browse Movies</router-link>
+			</vs-navbar-item>
 			<vs-spacer></vs-spacer>
 
 			<div class="searchbox">

@@ -24,6 +24,7 @@
      }
    ]"
 			align="center"
+			v-show="breadcrumbhandler"
 		></vs-breadcrumb>
 		<!-- <div id="nav">
 			<router-link to="/">Home</router-link>
@@ -37,6 +38,17 @@ import navbar from "./components/navbar";
 export default {
 	components: {
 		navbar
+	},
+	data() {
+		return {
+			breadcrumb: true
+		};
+	},
+	computed: {
+		breadcrumbhandler() {
+			if (this.$route.name === "home") return false;
+			else return true;
+		}
 	}
 };
 </script>

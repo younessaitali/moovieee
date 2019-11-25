@@ -14,6 +14,8 @@ const apikey = "8e44577d6448a20430c37799d8b6f3f6";
 
 Vue.prototype.$api = apikey;
 
+Vue.prototype.$EventBus = new Vue();
+
 Vue.config.productionTip = false;
 
 new Vue({

@@ -14,7 +14,7 @@
 						<input v-model="search" id="search" type="text" placeholder="Movie name ?" />
 					</div>
 					<div class="input-field second-wrap">
-						<button class="btn-search" type="button">SEARCH</button>
+						<button class="btn-search" type="button" @click="handelSearch">SEARCH</button>
 					</div>
 				</div>
 			</form>
@@ -32,6 +32,14 @@ export default {
 		return {
 			search: ""
 		};
+	},
+	methods: {
+		handelSearch() {
+			if (this.search === "") return;
+			else {
+				this.$EventBus.$emit("searchEvent", this.search);
+			}
+		}
 	}
 };
 </script>

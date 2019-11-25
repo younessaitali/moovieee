@@ -32,10 +32,13 @@ export default {
 			currentx: 1
 		};
 	},
-	created: function() {
+	created() {
+		this.$EventBus.$on("searchEvent", search => {
+			alert("yeeey am a life" + search);
+		});
 		this.fetchTodo();
 	},
-	beforeUpdate: function() {
+	beforeUpdate() {
 		this.fetchTodo();
 	},
 	methods: {
