@@ -38,8 +38,8 @@ const routes = [
     component: searchDisplay
   },
   {
-    path: "/movie",
-    name: "movies",
+    path: "/movie/:id",
+    name: "movie",
     component: movie
   }
 ];

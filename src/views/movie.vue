@@ -1,47 +1,87 @@
 <template>
 	<div>
 		<!-- Hero -->
-		<section class="et-hero-tabs">
-			<h1>STICKY SLIDER NAV</h1>
-			<h3>Sliding content with sticky tab nav</h3>
+
+		<section :style="cssVars" class="et-hero-tabs">
+			<h1>{{movie.original_title}}</h1>
+			<h3>
+				<span v-for="(genre, index) in movie.genres" :key="index">{{genre.name}} |</span>
+				{{movie.release_date}}
+			</h3>
 			<div class="et-hero-tabs-container">
-				<a class="et-hero-tab" href="#tab-es6">ES6</a>
-				<a class="et-hero-tab" href="#tab-flexbox">Flexbox</a>
-				<a class="et-hero-tab" href="#tab-react">React</a>
-				<a class="et-hero-tab" href="#tab-angular">Angular</a>
-				<a class="et-hero-tab" href="#tab-other">Other</a>
-				<span class="et-hero-tab-slider"></span>
+				<a class="et-hero-tab">ES6</a>
+				<a class="et-hero-tab">Flexbox</a>
+				<a class="et-hero-tab">React</a>
+				<a class="et-hero-tab">Angular</a>
+				<a class="et-hero-tab">Other</a>
 			</div>
 		</section>
 
 		<!-- Main -->
 		<main class="et-main">
 			<section class="et-slide" id="tab-es6">
-				<h1>ES6</h1>
-				<h3>something about es6</h3>
-			</section>
-			<section class="et-slide" id="tab-flexbox">
-				<h1>Flexbox</h1>
-				<h3>something about flexbox</h3>
-			</section>
-			<section class="et-slide" id="tab-react">
-				<h1>React</h1>
-				<h3>something about react</h3>
-			</section>
-			<section class="et-slide" id="tab-angular">
-				<h1>Angular</h1>
-				<h3>something about angular</h3>
-			</section>
-			<section class="et-slide" id="tab-other">
-				<h1>Other</h1>
-				<h3>something about other</h3>
+				<div class="poster">
+					<vs-images :hover="blur">
+						<vs-image :src="`https://picsum.photos/400/400?image=35`" />
+					</vs-images>
+				</div>
+				<div class="description">
+					<h1>ES6</h1>
+					<h3>something about es6</h3>
+				</div>
 			</section>
 		</main>
 	</div>
 </template>
 
 <script>
-export default {};
+const image = "https://image.tmdb.org/t/p/w1400_and_h450_face/";
+const poster = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/";
+
+export default {
+	data() {
+		return {
+			movie: {}
+		};
+	},
+	created() {
+		this.fetchTodo();
+	},
+	methods: {
+		fetchTodo() {
+			this.$http
+				.get(this.urlPath())
+				.then(
+					response =>
+						// handle success
+						response.data
+				)
+				.then(data => (this.movie = data))
+				.catch(function(error) {
+					// handle error
+					// custom console
+					console.log(error);
+				});
+		},
+		urlPath() {
+			return `3/movie/${this.$route.params.id}?api_key=${this.$api}`;
+		}
+	},
+	computed: {
+		imagePath() {
+			return image + this.movie.backdrop_path;
+		},
+		posterurl() {
+			return poster + this.movie.poster_path;
+		},
+		cssVars() {
+			return {
+				"--bg-image": `url("${image + this.movie.backdrop_path}")`,
+				"--color": "blue"
+			};
+		}
+	}
+};
 </script>
 
 <style lang="scss">
@@ -52,27 +92,71 @@ body {
 a {
 	text-decoration: none;
 }
-
-.et-hero-tabs,
-.et-slide {
+.et-hero-tabs {
+	background: var(--bg-image) center center fixed;
+	max-height: 70vh;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.et-hero-tabs {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	height: 100vh;
 	position: relative;
-	background: #eee;
+	//	background: #eee;
 	text-align: center;
 	padding: 0 2em;
 	h1 {
 		font-size: 2rem;
 		margin: 0;
 		letter-spacing: 1rem;
+		color: rgb(255, 255, 255);
+		background: rgb(0, 0, 0); /* fallback color */
+		background: rgba(0, 0, 0, 0.7);
+		padding: 10px;
 	}
 	h3 {
 		font-size: 1rem;
 		letter-spacing: 0.3rem;
 		opacity: 0.6;
+		color: rgb(255, 255, 255);
+		background: rgb(255, 255, 255); /* fallback color */
+		background: rgba(0, 0, 0, 0.7);
+		padding: 10px;
+	}
+}
+.et-slide {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: lightslategray;
+	height: 93vh;
+
+	text-align: center;
+	padding: 0 2em;
+	.description {
+		flex-grow: 1;
+		h1 {
+			font-size: 2rem;
+			margin: 0;
+			letter-spacing: 1rem;
+			color: rgb(255, 255, 255);
+		}
+		h3 {
+			font-size: 1rem;
+			letter-spacing: 0.3rem;
+			opacity: 0.6;
+			color: rgb(255, 255, 255);
+		}
+	}
+	.poster {
+		flex-grow: 1;
+
+		.vs-image--img {
+			min-width: 100%;
+		}
 	}
 }
 

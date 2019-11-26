@@ -8,9 +8,10 @@
   			  <vs-col  vs-type="flex" vs-justify="space-around," vs-align="center" vs-w="3" v-for="(movie, index) in movies.results" :key="index" vs-sm="4" vs-xs="12" vs-lg="3" class="item">
 					<div class="container">
 						<moviecard
-							:src="movie.backdrop_path"
+							:src="movie.poster_path"
 							:title="movie.original_title"
-						></moviecard>
+							:id="movie.id"
+						></moviecard> 
 					</div>
   			  </vs-col>
 		</vs-row>

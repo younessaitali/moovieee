@@ -54,7 +54,11 @@
 				class="item"
 			>
 				<div class="container">
-					<moviecard :src="movie.backdrop_path" :title="movie.original_title"></moviecard>
+					<moviecard 
+					:src="movie.backdrop_path" 
+					:title="movie.original_title" 
+					:id="movie.id">
+					</moviecard>
 				</div>
 			</vs-col>
 		</vs-row>
@@ -125,7 +129,7 @@ export default {
 				});
 		},
 		urlPath() {
-			return `3/discover/movie?sort_by=popularity.desc&page=${
+			return `3/discover/movie?sort_by=revenue.desc&page=${
 				this.currentx
 			}&api_key=${this.$api}`;
 		}
