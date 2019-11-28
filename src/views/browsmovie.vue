@@ -4,34 +4,39 @@
                         <div class="searchInput">
                             <vs-input 
 							size="normal"
-							@click="handelSearch"
 							icon="search"
 							placeholder="Search"
-							v-on:keyup.enter="handelSearch"
- 							v-model="search"/>
+							v-model="search"
+							@click="handelSearch"
+							v-on:keyup.enter="handelSearch"/>
+    
                     </div>
 			<vs-collapse>
 				<vs-collapse-item>
-    			    <div slot="header">
-        				Advanced Search
-       				 </div>
+        
 				<div class="selectionMenu">
-									
-                            <vs-select v-model="selectgenr" color="primary" class="selectExample" label="Genre:" >
+                            <vs-select color="primary" class="selectExample" label="Genre:" >
                                 <vs-select-item
                                     :key="index"
                                     :value="item.value"
                                     :text="item.text"
-                                    v-for="(item,index) in genres"
+                                    v-for="(item,index) in options1"
                                 />
                             </vs-select>
-                            <vs-select v-model="selectorder" color="primary" class="selectExample" label="Order By:" >
+                            <vs-select color="primary" class="selectExample" label="Rating:" >
                                 <vs-select-item
-									
                                     :key="index"
                                     :value="item.value"
                                     :text="item.text"
-                                    v-for="(item,index) in options"
+                                    v-for="(item,index) in options1"
+                                />
+                            </vs-select>
+                            <vs-select color="primary" class="selectExample" label="Order By:" >
+                                <vs-select-item
+                                    :key="index"
+                                    :value="item.value"
+                                    :text="item.text"
+                                    v-for="(item,index) in options2"
                                 />
                             </vs-select>
                 </div>
@@ -47,7 +52,7 @@
 				vs-justify="space-around,"
 				vs-align="center"
 				vs-w="3"
-				v-for="(movie, index) in movieFilter"
+				v-for="(movie, index) in movies.results"
 				:key="index"
 				vs-sm="4"
 				vs-xs="12"
@@ -81,30 +86,33 @@ export default {
 			search: "",
 			movies: [],
 			currentx: 1,
-			selectgenr: 0,
-			selectorder: "",
-			genres: [{ text: "All", value: 0 }],
-			options: [
-				{ text: "Year", value: "year" },
-				{ text: "Rating", value: "rating" }
+			options1: [
+				{ text: "Square", value: 1 },
+				{ text: "Rectangle", value: 2 },
+				{ text: "Rombo", value: 3 },
+				{ text: "Romboid", value: 4 },
+				{ text: "Trapeze", value: 5 },
+				{ text: "Triangle", value: 6 },
+				{ text: "Polygon", value: 7 },
+				{ text: "Regular polygon", value: 8 },
+				{ text: "Circumference", value: 9 },
+				{ text: "Circle", value: 10 },
+				{ text: "Circular sector", value: 11 },
+				{ text: "Circular trapeze", value: 12 }
+			],
+			options2: [
+				{ text: "Primary", value: "primary" },
+				{ text: "Success", value: "success" },
+				{ text: "Danger", value: "danger" },
+				{ text: "Warning", value: "warning" },
+				{ text: "Dark", value: "dark" }
 			],
 			watch: {
 				currentx: function() {
-					this.fetchTodo(); 
-				},
-				selectorder: function() {}
+					this.fetchTodo();
+				}
 			}
 		};
-	},
-	computed: {
-		movieFilter() {
-			if (this.selectgenr == 0) return this.movies.results;
-			else {
-				return this.movies.results.filter(movie =>
-					movie.genre_ids.includes(this.selectgenr)
-				);
-			}
-		}
 	},
 	created() {
 		this.$EventBus.$on("searchEvent", search => {
@@ -112,30 +120,7 @@ export default {
 		});
 		this.fetchTodo();
 	},
-	mounted() {
-		const url = `3/genre/movie/list?api_key=${this.$api}&language=en-US`;
-		this.$http
-			.get(url)
-			.then(
-				response =>
-					// handle success
-					response.data.genres
-			)
-			.then(data => {
-				console.log(data);
-				data.forEach(genre => {
-					let inputt = new Object();
-					inputt.text = genre.name;
-					inputt.value = genre.id;
-					this.genres.push(inputt);
-				});
-			})
-			.catch(function(error) {
-				// handle error
-				// custom console
-				console.log(error);
-			});
-	},
+
 	methods: {
 		fetchTodo() {
 			this.$http
@@ -153,32 +138,14 @@ export default {
 				});
 		},
 		urlPath() {
-			const key = this.$route.params.keys.replace(/_/g, "%20");
-			console.log(key);
-			return `3/search/movie?api_key=${
-				this.$api
-			}&language=en-US&query=${key}&page=1&include_adult=false`;
+			return `3/discover/movie?sort_by=revenue.desc&page=${
+				this.currentx
+			}&api_key=${this.$api}`;
 		},
 		handelSearch() {
 			if (this.search.trim() === "") return;
 			else {
-				const key = this.search.trim().replace(/_/g, "%20");
-				const url = `3/search/movie?api_key=${
-					this.$api
-				}&language=en-US&query=${key}&page=1&include_adult=false`;
-				this.$http
-					.get(url)
-					.then(
-						response =>
-							// handle success
-							response.data
-					)
-					.then(data => (this.movies = data))
-					.catch(function(error) {
-						// handle error
-						// custom console
-						console.log(error);
-					});
+				this.$emit("searchEvent", this.search);
 			}
 		}
 	}

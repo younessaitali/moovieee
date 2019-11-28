@@ -1,8 +1,8 @@
 <template>
 	<div class="hero">
 		<div class="s130">
-			<form>
-				<div class="inner-form">
+			<div class="form">
+				<div class="inner-search">
 					<div class="input-field first-wrap">
 						<div class="svg-wrapper">
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -11,13 +11,19 @@
 								/>
 							</svg>
 						</div>
-						<input v-model="search" id="search" type="text" placeholder="Movie name ?" />
+						<input
+							v-model="search"
+							v-on:keyup.enter="handelSearch"
+							id="search"
+							type="text"
+							placeholder="Movie name ?"
+						/>
 					</div>
 					<div class="input-field second-wrap">
 						<button class="btn-search" type="button" @click="handelSearch">SEARCH</button>
 					</div>
 				</div>
-			</form>
+			</div>
 		</div>
 	</div>
 </template>
@@ -35,9 +41,9 @@ export default {
 	},
 	methods: {
 		handelSearch() {
-			if (this.search === "") return;
+			if (this.search.trim() === "") return;
 			else {
-				this.$EventBus.$emit("searchEvent", this.search);
+				this.$emit("searchEvent", this.search);
 			}
 		}
 	}
@@ -67,13 +73,13 @@ export default {
 	padding: 15px;
 }
 
-.s130 form {
+.s130 .form {
 	width: 100%;
 	max-width: 790px;
 	padding-top: 24vh;
 }
 
-.s130 form .inner-form {
+.s130 .form .inner-search {
 	display: -ms-flexbox;
 	display: flex;
 	width: 100%;
@@ -87,11 +93,11 @@ export default {
 	margin-bottom: 30px;
 }
 
-.s130 form .inner-form .input-field {
+.s130 .form .inner-search .input-field {
 	height: 68px;
 }
 
-.s130 form .inner-form .input-field input {
+.s130 .form .inner-search .input-field input {
 	height: 100%;
 	background: transparent;
 	border: 0;
@@ -102,28 +108,28 @@ export default {
 	color: #000;
 }
 
-.s130 form .inner-form .input-field input.placeholder {
+.s130 .form .inner-search .input-field input.placeholder {
 	color: #222;
 	font-size: 16px;
 }
 
-.s130 form .inner-form .input-field input:-moz-placeholder {
+.s130 .form .inner-search .input-field input:-moz-placeholder {
 	color: #222;
 	font-size: 16px;
 }
 
-.s130 form .inner-form .input-field input::-webkit-input-placeholder {
+.s130 .form .inner-search .input-field input::-webkit-input-placeholder {
 	color: #222;
 	font-size: 16px;
 }
 
-.s130 form .inner-form .input-field input:hover,
-.s130 form .inner-form .input-field input:focus {
+.s130 .form .inner-search .input-field input:hover,
+.s130 .form .inner-search .input-field input:focus {
 	box-shadow: none;
 	outline: 0;
 }
 
-.s130 form .inner-form .input-field.first-wrap {
+.s130 .form .inner-search .input-field.first-wrap {
 	-ms-flex-positive: 1;
 	flex-grow: 1;
 	display: -ms-flexbox;
@@ -133,12 +139,12 @@ export default {
 	background: #f7f0f0;
 }
 
-.s130 form .inner-form .input-field.first-wrap input {
+.s130 .form .inner-search .input-field.first-wrap input {
 	-ms-flex-positive: 1;
 	flex-grow: 1;
 }
 
-.s130 form .inner-form .input-field.first-wrap .svg-wrapper {
+.s130 .form .inner-search .input-field.first-wrap .svg-wrapper {
 	min-width: 80px;
 	display: -ms-flexbox;
 	display: flex;
@@ -148,17 +154,17 @@ export default {
 	align-items: center;
 }
 
-.s130 form .inner-form .input-field.first-wrap svg {
+.s130 .form .inner-search .input-field.first-wrap svg {
 	width: 36px;
 	height: 36px;
 	fill: #222;
 }
 
-.s130 form .inner-form .input-field.second-wrap {
+.s130 .form .inner-search .input-field.second-wrap {
 	min-width: 216px;
 }
 
-.s130 form .inner-form .input-field.second-wrap .btn-search {
+.s130 .form .inner-search .input-field.second-wrap .btn-search {
 	height: 100%;
 	width: 100%;
 	white-space: nowrap;
@@ -173,29 +179,29 @@ export default {
 	font-weight: 300;
 }
 
-.s130 form .inner-form .input-field.second-wrap .btn-search:hover {
+.s130 .form .inner-search .input-field.second-wrap .btn-search:hover {
 	background: #195fc9;
 }
 
-.s130 form .inner-form .input-field.second-wrap .btn-search:focus {
+.s130 .form .inner-search .input-field.second-wrap .btn-search:focus {
 	outline: 0;
 	box-shadow: none;
 }
 
-.s130 form .info {
+.s130 .form .info {
 	font-size: 15px;
 	color: #ccc;
 	padding-left: 26px;
 }
 
 @media screen and (max-width: 992px) {
-	.s130 form .inner-form .input-field {
+	.s130 .form .inner-search .input-field {
 		height: 50px;
 	}
 }
 
 @media screen and (max-width: 767px) {
-	.s130 form .inner-form .input-field.first-wrap .svg-wrapper {
+	.s130 .form .inner-search .input-field.first-wrap .svg-wrapper {
 		min-width: 40px;
 		display: -ms-flexbox;
 		display: flex;
@@ -206,17 +212,17 @@ export default {
 		padding: 0 10px;
 	}
 
-	.s130 form .inner-form .input-field.first-wrap svg {
+	.s130 .form .inner-search .input-field.first-wrap svg {
 		width: 26px;
 		height: 26px;
 		fill: #222;
 	}
 
-	.s130 form .inner-form .input-field.second-wrap {
+	.s130 .form .inner-search .input-field.second-wrap {
 		min-width: 100px;
 	}
 
-	.s130 form .inner-form .input-field.second-wrap .btn-search {
+	.s130 .form .inner-search .input-field.second-wrap .btn-search {
 		font-size: 13px;
 	}
 }

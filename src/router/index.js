@@ -4,6 +4,7 @@ import Home from "../views/Home.vue";
 import display from "../views/display.vue";
 import searchDisplay from "../views/searchdisplay.vue";
 import movie from "../views/movie.vue";
+import browsmovie from "../views/browsmovie.vue";
 import Vuesax from "vuesax";
 
 import "vuesax/dist/vuesax.css";
@@ -28,14 +29,14 @@ const routes = [
     component: display
   },
   {
-    path: "/search",
+    path: "/search/:keys",
     name: "search",
     component: searchDisplay
   },
   {
     path: "/browse-movies",
     name: "browse-movies",
-    component: searchDisplay
+    component: browsmovie
   },
   {
     path: "/movie/:id",

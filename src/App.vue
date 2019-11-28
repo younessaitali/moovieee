@@ -2,7 +2,7 @@
 
 <template>
 	<div id="app">
-		<navbar></navbar>
+		<navbar v-on:searchEvent="searchhandler"></navbar>
 		<vs-breadcrumb
 			:items="
    [
@@ -29,7 +29,7 @@
 		<!-- <div id="nav">
 			<router-link to="/">Home</router-link>
 		</div>-->
-		<router-view />
+		<router-view v-on:searchEvent="searchhandler" />
 	</div>
 </template>
 <script>
@@ -48,6 +48,16 @@ export default {
 		breadcrumbhandler() {
 			if (this.$route.name === "home") return false;
 			else return true;
+		}
+	},
+	methods: {
+		searchhandler(search) {
+			// this.$on("searchEvent", search => {
+			const key = search.trim().replace(/ /g, "_");
+			console.log("work" + key);
+			this.$router.push({ name: "search", params: { keys: key } });
+
+			// });
 		}
 	}
 };

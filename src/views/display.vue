@@ -30,7 +30,12 @@ export default {
 	data() {
 		return {
 			movies: [],
-			currentx: 1
+			currentx: 1,
+			watch: {
+				currentx: function() {
+					this.fetchTodo();
+				}
+			}
 		};
 	},
 	created() {
@@ -39,9 +44,9 @@ export default {
 		});
 		this.fetchTodo();
 	},
-	beforeUpdate() {
-		this.fetchTodo();
-	},
+	// beforeUpdate() {
+	// 	this.fetchTodo();
+	// },
 	methods: {
 		fetchTodo() {
 			this.$http
@@ -60,6 +65,7 @@ export default {
 			console.log(`${this.urlPath()}api_key=${this.$api}`);
 		},
 		urlPath() {
+			console.log("kkk");
 			if (this.$route.name === "trending")
 				return `3/trending/movie/week?api_key=${this.$api}`;
 			if (this.$route.name === "discovery")

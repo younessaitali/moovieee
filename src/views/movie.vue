@@ -9,28 +9,35 @@
 				{{movie.release_date}}
 			</h3>
 			<div class="et-hero-tabs-container">
-				<a class="et-hero-tab">ES6</a>
-				<a class="et-hero-tab">Flexbox</a>
-				<a class="et-hero-tab">React</a>
-				<a class="et-hero-tab">Angular</a>
-				<a class="et-hero-tab">Other</a>
+				<a class="et-hero-tab" @click="active_tab('details')">Details</a>
+				<a class="et-hero-tab" @click="active_tab('videos')">Videos</a>
+				<a class="et-hero-tab" @click="active_tab('images')">Images</a>
 			</div>
 		</section>
 
 		<!-- Main -->
-		<main class="et-main">
-			<section class="et-slide" id="tab-es6">
-				<div class="poster">
-					<vs-images :hover="blur">
-						<vs-image :src="`https://picsum.photos/400/400?image=35`" />
-					</vs-images>
+		<main class="movie-details" v-show="detailsIsActive">
+			<div class="poster">
+				<div slot="media">
+					<img :src="posterurl" />
 				</div>
-				<div class="description">
-					<h1>ES6</h1>
-					<h3>something about es6</h3>
-				</div>
-			</section>
+			</div>
+			<div class="description">
+				<h1>{{movie.original_title}}</h1>
+				<h3>{{movie.overview}}</h3>
+			</div>
 		</main>
+		<main class="movie-videos" v-show="videosIsActive">
+			<iframe
+				width="560"
+				height="315"
+				src="https://www.youtube.com/embed/eSLe4HuKuK0"
+				frameborder="0"
+				allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+				allowfullscreen
+			></iframe>
+		</main>
+		<main class="movies-images" v-show="imagesIsActive"></main>
 	</div>
 </template>
 
@@ -41,7 +48,10 @@ const poster = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/";
 export default {
 	data() {
 		return {
-			movie: {}
+			movie: {},
+			detailsIsActive: true,
+			videosIsActive: false,
+			imagesIsActive: false
 		};
 	},
 	created() {
@@ -65,6 +75,24 @@ export default {
 		},
 		urlPath() {
 			return `3/movie/${this.$route.params.id}?api_key=${this.$api}`;
+		},
+		active_tab(arg) {
+			if (arg != "images") {
+				this.imagesIsActive = false;
+			} else {
+				this.imagesIsActive = true;
+			}
+
+			if (arg != "videos") {
+				this.videosIsActive = false;
+			} else {
+				this.videosIsActive = true;
+			}
+			if (arg != "details") {
+				this.detailsIsActive = false;
+			} else {
+				this.detailsIsActive = true;
+			}
 		}
 	},
 	computed: {
@@ -127,39 +155,38 @@ a {
 		padding: 10px;
 	}
 }
-.et-slide {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background-color: lightslategray;
-	height: 93vh;
 
-	text-align: center;
-	padding: 0 2em;
-	.description {
+.movie-details {
+	display: flex;
+	.poster {
 		flex-grow: 1;
+		padding-top: 5%;
+		padding-left: 3%;
+		padding-right: 3%;
+		padding-bottom: 2%;
+		img {
+			max-height: 60vh;
+		}
+	}
+	.description {
+		padding-top: 5%;
+		padding-left: 3%;
+		padding-right: 3%;
+		padding-bottom: 2%;
+		padding-top: 4rem;
+		flex-grow: 4;
+		text-align: left;
 		h1 {
-			font-size: 2rem;
-			margin: 0;
-			letter-spacing: 1rem;
-			color: rgb(255, 255, 255);
+			font-size: 1.5rem;
+			padding: 1%;
 		}
 		h3 {
 			font-size: 1rem;
-			letter-spacing: 0.3rem;
 			opacity: 0.6;
-			color: rgb(255, 255, 255);
-		}
-	}
-	.poster {
-		flex-grow: 1;
-
-		.vs-image--img {
-			min-width: 100%;
+			padding: 1%;
 		}
 	}
 }
-
 .et-hero-tabs-container {
 	display: flex;
 	flex-direction: row;
@@ -203,12 +230,24 @@ a {
 
 @media (min-width: 800px) {
 	.et-hero-tabs,
-	.et-slide {
+	.movie-details {
 		h1 {
 			font-size: 3rem;
 		}
 		h3 {
 			font-size: 1rem;
+		}
+	}
+	.et-hero-tab {
+		font-size: 1rem;
+	}
+}
+@media (max-width: 600px) {
+	.movie-details {
+		flex-wrap: wrap;
+
+		.description {
+			text-align: center;
 		}
 	}
 	.et-hero-tab {

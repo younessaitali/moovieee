@@ -28,8 +28,8 @@
 			</vs-navbar-item>
 			<vs-spacer></vs-spacer>
 
-			<div class="searchbox">
-				<vs-input icon="search" placeholder="Search" v-model="search" />
+			<div class="searchbox" @click="handelSearch">
+				<vs-input v-on:keyup.enter="handelSearch" icon="search" placeholder="Search" v-model="search" />
 			</div>
 		</vs-navbar>
 	</div>
@@ -40,7 +40,15 @@ export default {
 	data: () => ({
 		activeItem: 0,
 		search: ""
-	})
+	}),
+	methods: {
+		handelSearch() {
+			if (this.search.trim() === "") return;
+			else {
+				this.$emit("searchEvent", this.search);
+			}
+		}
+	}
 };
 </script>
 <style lang="scss">
