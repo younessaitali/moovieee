@@ -69,7 +69,7 @@
 			>
 				<div class="container">
 					<moviecard
-						:src="movie.backdrop_path"
+						:src="movie.poster_path"
 						:title="movie.original_title"
 						:id="movie.id"
 					>
@@ -110,14 +110,6 @@ export default {
 			watch: {
 				currentx: function() {
 					this.fetchTodo();
-				},
-				selectorder: function() {
-					// this.movies.results.sort(function(a, b) {
-					// 	// Turn your strings into dates, and then subtract them
-					// 	// to get a value that is either negative, positive, or zero.
-					// 	return new Date(b.release_date) - new Date(a.release_date);
-					// });
-					console.log("moussa");
 				}
 			}
 		};

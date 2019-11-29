@@ -13,30 +13,32 @@
                     </div>
 			<vs-collapse>
 				<vs-collapse-item>
-        
+						<div slot="header">
+						Advanced Search
+					</div>
 				<div class="selectionMenu">
-                            <vs-select color="primary" class="selectExample" label="Genre:" >
+                            <vs-select color="primary" v-model="genremodel" class="selectExample" label="Genre:" >
                                 <vs-select-item
                                     :key="index"
                                     :value="item.value"
                                     :text="item.text"
-                                    v-for="(item,index) in options1"
+                                    v-for="(item,index) in genres"
                                 />
                             </vs-select>
-                            <vs-select color="primary" class="selectExample" label="Rating:" >
+                            <vs-select color="primary" v-model="ratingmodel" class="selectExample" label="Rating:" >
                                 <vs-select-item
                                     :key="index"
                                     :value="item.value"
                                     :text="item.text"
-                                    v-for="(item,index) in options1"
+                                    v-for="(item,index) in rating"
                                 />
                             </vs-select>
-                            <vs-select color="primary" class="selectExample" label="Order By:" >
+                            <vs-select color="primary" v-model="sortmodel" class="selectExample" label="Sort By:" >
                                 <vs-select-item
                                     :key="index"
                                     :value="item.value"
                                     :text="item.text"
-                                    v-for="(item,index) in options2"
+                                    v-for="(item,index) in sort"
                                 />
                             </vs-select>
                 </div>
@@ -52,7 +54,7 @@
 				vs-justify="space-around,"
 				vs-align="center"
 				vs-w="3"
-				v-for="(movie, index) in movies.results"
+				v-for="(movie, index) in movieFilter"
 				:key="index"
 				vs-sm="4"
 				vs-xs="12"
@@ -61,7 +63,7 @@
 			>
 				<div class="container">
 					<moviecard 
-					:src="movie.backdrop_path" 
+					:src="movie.poster_path" 
 					:title="movie.original_title" 
 					:id="movie.id">
 					</moviecard>
@@ -85,28 +87,18 @@ export default {
 		return {
 			search: "",
 			movies: [],
+			sortmodel: "popular",
+			genremodel: 0,
+			ratingmodel: 0,
 			currentx: 1,
-			options1: [
-				{ text: "Square", value: 1 },
-				{ text: "Rectangle", value: 2 },
-				{ text: "Rombo", value: 3 },
-				{ text: "Romboid", value: 4 },
-				{ text: "Trapeze", value: 5 },
-				{ text: "Triangle", value: 6 },
-				{ text: "Polygon", value: 7 },
-				{ text: "Regular polygon", value: 8 },
-				{ text: "Circumference", value: 9 },
-				{ text: "Circle", value: 10 },
-				{ text: "Circular sector", value: 11 },
-				{ text: "Circular trapeze", value: 12 }
+			genres: [{ text: "All", value: 0 }],
+			sort: [
+				{ text: "Popular", value: "popular" },
+				{ text: "Rating", value: "rating" },
+				{ text: "Year", value: "year" },
+				{ text: "Revenue", value: "revenue" }
 			],
-			options2: [
-				{ text: "Primary", value: "primary" },
-				{ text: "Success", value: "success" },
-				{ text: "Danger", value: "danger" },
-				{ text: "Warning", value: "warning" },
-				{ text: "Dark", value: "dark" }
-			],
+			rating: [{ text: "All", value: 0 }],
 			watch: {
 				currentx: function() {
 					this.fetchTodo();
@@ -114,11 +106,69 @@ export default {
 			}
 		};
 	},
+	computed: {
+		movieFilter() {
+			if (
+				!(
+					this.sortmodel === "popular" &&
+					this.genremodel === 0 &&
+					this.ratingmodel === 0
+				)
+			) {
+				let str = "";
+				if (this.ratingmodel != 0)
+					str += `&vote_count.gte=${this.ratingmodel}`;
+				if (this.genremodel != 0)
+					str += `&with_genres=${this.genremodel}`;
+				if (this.sortmodel != "popular") {
+					if (this.sortmodel === "rating")
+						str += "&sort_by=vote_count.desc";
+					else if (this.sortmodel === "year")
+						str += "&sort_by=release_date.desc";
+					else if (this.sortmodel === "revenue")
+						str += "&sort_by=revenue.desc";
+				}
+				this.filter(str);
+				return this.movies.results;
+			} else {
+				this.fetchTodo();
+				return this.movies.results;
+			}
+		}
+	},
 	created() {
-		this.$EventBus.$on("searchEvent", search => {
-			alert("yeeey am a life" + search);
-		});
 		this.fetchTodo();
+	},
+	mounted() {
+		//* to fill genres array from api
+		const url = `3/genre/movie/list?api_key=${this.$api}&language=en-US`;
+		this.$http
+			.get(url)
+			.then(
+				response =>
+					// handle success
+					response.data.genres
+			)
+			.then(data => {
+				console.log(data);
+				data.forEach(genre => {
+					let inputt = new Object();
+					inputt.text = genre.name;
+					inputt.value = genre.id;
+					this.genres.push(inputt);
+				});
+			})
+			.catch(function(error) {
+				// handle error
+				// custom console
+				console.log(error);
+			});
+		for (let i = 1; i < 10; i++) {
+			let inputtt = new Object();
+			inputtt.text = `+${i}`;
+			inputtt.value = i;
+			this.rating.push(inputtt);
+		}
 	},
 
 	methods: {
@@ -138,15 +188,37 @@ export default {
 				});
 		},
 		urlPath() {
-			return `3/discover/movie?sort_by=revenue.desc&page=${
+			return `https://api.themoviedb.org/3/discover/movie?api_key=${
+				this.$api
+			}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=${
 				this.currentx
-			}&api_key=${this.$api}`;
+			}`;
 		},
 		handelSearch() {
 			if (this.search.trim() === "") return;
 			else {
 				this.$emit("searchEvent", this.search);
 			}
+		},
+		filter(str) {
+			let url = `https://api.themoviedb.org/3/discover/movie?api_key=${
+				this.$api
+			}&language=en-US&include_adult=false&include_video=false&page=${
+				this.currentx
+			}${str}`;
+			this.$http
+				.get(url)
+				.then(
+					response =>
+						// handle success
+						response.data
+				)
+				.then(data => (this.movies = data))
+				.catch(function(error) {
+					// handle error
+					// custom console
+					console.log(error);
+				});
 		}
 	}
 };
