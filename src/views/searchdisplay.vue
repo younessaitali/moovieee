@@ -1,47 +1,60 @@
-<template  lang="html">
+<template lang="html">
 	<div class="container">
 		<div>
-                        <div class="searchInput">
-                            <vs-input 
-							size="normal"
-							@click="handelSearch"
-							icon="search"
-							placeholder="Search"
-							v-on:keyup.enter="handelSearch"
- 							v-model="search"/>
-                    </div>
+			<div class="searchInput">
+				<vs-input
+					size="normal"
+					@click="handelSearch"
+					icon="search"
+					placeholder="Search"
+					v-on:keyup.enter="handelSearch"
+					v-model="search"
+				/>
+			</div>
 			<vs-collapse>
 				<vs-collapse-item>
-    			    <div slot="header">
-        				Advanced Search
-       				 </div>
-				<div class="selectionMenu">
-									
-                            <vs-select v-model="selectgenr" color="primary" class="selectExample" label="Genre:" >
-                                <vs-select-item
-                                    :key="index"
-                                    :value="item.value"
-                                    :text="item.text"
-                                    v-for="(item,index) in genres"
-                                />
-                            </vs-select>
-                            <vs-select v-model="selectorder" color="primary" class="selectExample" label="Order By:" >
-                                <vs-select-item
-									
-                                    :key="index"
-                                    :value="item.value"
-                                    :text="item.text"
-                                    v-for="(item,index) in options"
-                                />
-                            </vs-select>
-                </div>
-					
+					<div slot="header">
+						Advanced Search
+					</div>
+					<div class="selectionMenu">
+						<vs-select
+							v-model="selectgenr"
+							color="primary"
+							class="selectExample"
+							label="Genre:"
+						>
+							<vs-select-item
+								:key="index"
+								:value="item.value"
+								:text="item.text"
+								v-for="(item, index) in genres"
+							/>
+						</vs-select>
+						<vs-select
+							v-model="selectorder"
+							color="primary"
+							class="selectExample"
+							label="Order By:"
+						>
+							<vs-select-item
+								:key="index"
+								:value="item.value"
+								:text="item.text"
+								v-for="(item, index) in options"
+							/>
+						</vs-select>
+					</div>
 				</vs-collapse-item>
 			</vs-collapse>
 		</div>
 		<vs-divider icon="watch_later"></vs-divider>
 
-		<vs-row vs-align="center" vs-type="flex" vs-justify="space-around" vs-w="12">
+		<vs-row
+			vs-align="center"
+			vs-type="flex"
+			vs-justify="space-around"
+			vs-w="12"
+		>
 			<vs-col
 				vs-type="flex"
 				vs-justify="space-around,"
@@ -55,17 +68,23 @@
 				class="item"
 			>
 				<div class="container">
-					<moviecard 
-					:src="movie.backdrop_path" 
-					:title="movie.original_title" 
-					:id="movie.id">
+					<moviecard
+						:src="movie.backdrop_path"
+						:title="movie.original_title"
+						:id="movie.id"
+					>
 					</moviecard>
 				</div>
 			</vs-col>
 		</vs-row>
 
 		<span @click="fetchTodo" class="paginationbutton">
-			<vs-pagination :total="movies.total_pages" v-model="currentx" :max="10" goto></vs-pagination>
+			<vs-pagination
+				:total="movies.total_pages"
+				v-model="currentx"
+				:max="10"
+				goto
+			></vs-pagination>
 		</span>
 	</div>
 </template>
@@ -90,19 +109,37 @@ export default {
 			],
 			watch: {
 				currentx: function() {
-					this.fetchTodo(); 
+					this.fetchTodo();
 				},
-				selectorder: function() {}
+				selectorder: function() {
+					// this.movies.results.sort(function(a, b) {
+					// 	// Turn your strings into dates, and then subtract them
+					// 	// to get a value that is either negative, positive, or zero.
+					// 	return new Date(b.release_date) - new Date(a.release_date);
+					// });
+					console.log("moussa");
+				}
 			}
 		};
 	},
 	computed: {
 		movieFilter() {
-			if (this.selectgenr == 0) return this.movies.results;
+			if (this.selectgenr === 0 && this.selectorder === "")
+				return this.movies.results;
 			else {
-				return this.movies.results.filter(movie =>
-					movie.genre_ids.includes(this.selectgenr)
-				);
+				if (this.selectorder === "year") {
+					this.sortByYear();
+				}
+				if (this.selectorder === "rating") {
+					this.sortByRating();
+				}
+				if (this.selectgenr != 0) {
+					return this.movies.results.filter(movie =>
+						movie.genre_ids.includes(this.selectgenr)
+					);
+				} else {
+					return this.movies.results;
+				}
 			}
 		}
 	},
@@ -113,6 +150,7 @@ export default {
 		this.fetchTodo();
 	},
 	mounted() {
+		//* to fill genres array from api
 		const url = `3/genre/movie/list?api_key=${this.$api}&language=en-US`;
 		this.$http
 			.get(url)
@@ -157,7 +195,9 @@ export default {
 			console.log(key);
 			return `3/search/movie?api_key=${
 				this.$api
-			}&language=en-US&query=${key}&page=1&include_adult=false`;
+			}&language=en-US&query=${key}&page=${
+				this.currentx
+			}&include_adult=false`;
 		},
 		handelSearch() {
 			if (this.search.trim() === "") return;
@@ -165,7 +205,9 @@ export default {
 				const key = this.search.trim().replace(/_/g, "%20");
 				const url = `3/search/movie?api_key=${
 					this.$api
-				}&language=en-US&query=${key}&page=1&include_adult=false`;
+				}&language=en-US&query=${key}&page=${
+					this.currentx
+				}&include_adult=false`;
 				this.$http
 					.get(url)
 					.then(
@@ -180,6 +222,18 @@ export default {
 						console.log(error);
 					});
 			}
+		},
+		sortByYear() {
+			this.movies.results.sort(function(a, b) {
+				// Turn your strings into dates, and then subtract them
+				// to get a value that is either negative, positive, or zero.
+				return new Date(b.release_date) - new Date(a.release_date);
+			});
+		},
+		sortByRating() {
+			this.movies.results.sort(function(a, b) {
+				return b.vote_average - a.vote_average;
+			});
 		}
 	}
 };

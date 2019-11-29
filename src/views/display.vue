@@ -44,9 +44,9 @@ export default {
 		});
 		this.fetchTodo();
 	},
-	// beforeUpdate() {
-	// 	this.fetchTodo();
-	// },
+	beforeUpdate() {
+		this.fetchTodo();
+	},
 	methods: {
 		fetchTodo() {
 			this.$http
@@ -62,16 +62,16 @@ export default {
 					// custom console
 					console.log(error);
 				});
-			console.log(`${this.urlPath()}api_key=${this.$api}`);
 		},
 		urlPath() {
-			console.log("kkk");
-			if (this.$route.name === "trending")
+			if (this.$route.name === "trending") {
 				return `3/trending/movie/week?api_key=${this.$api}`;
-			if (this.$route.name === "discovery")
+			}
+			if (this.$route.name === "discovery") {
 				return `3/discover/movie?sort_by=popularity.desc&page=${
 					this.currentx
 				}&api_key=${this.$api}`;
+			}
 			return "";
 		}
 	}
