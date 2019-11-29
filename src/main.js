@@ -2,10 +2,14 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import axios from "axios";
+import VueAgile from "vue-agile";
+
+Vue.use(VueAgile);
 
 const http = axios.create({
-  baseURL: process.env.BACKEND_URL ?
-    process.env.BACKEND_URL : "https://api.themoviedb.org/"
+  baseURL: process.env.BACKEND_URL
+    ? process.env.BACKEND_URL
+    : "https://api.themoviedb.org/"
 });
 
 Vue.prototype.$http = http;
