@@ -28,26 +28,19 @@
 			</div>
 		</main>
 		<main class="movie-videos" v-show="videosIsActive">
-			<iframe
-				width="560"
-				height="315"
-				src="https://www.youtube.com/embed/eSLe4HuKuK0"
-				frameborder="0"
-				allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-				allowfullscreen
-			></iframe>
-			<iframe
-				width="560"
-				height="315"
-				src="https://www.youtube.com/embed/eSLe4HuKuK0"
-				frameborder="0"
-				allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-				allowfullscreen
-			></iframe>
-
 			<agile class="main" ref="main" :options="options1" :as-nav-for="asNavFor1">
 				<div class="slide" v-for="(slide, index) in slides" :key="index" :class="`slide--${index}`">
-					<img :src="slide" />
+					<div class="thumbnail-image">
+						<a class="foobox">
+							<img src="https://img.youtube.com/vi/eSLe4HuKuK0/maxresdefault.jpg" alt />
+						</a>
+
+						<div class="overlay">
+							<a class="play-icon foobox">
+								<i class="fa fa-play"></i>
+							</a>
+						</div>
+					</div>
 				</div>
 			</agile>
 			<agile class="thumbnails" ref="thumbnails" :options="options2" :as-nav-for="asNavFor2">
@@ -58,7 +51,17 @@
 					:class="`slide--${index}`"
 					@click="$refs.thumbnails.goTo(index)"
 				>
-					<img :src="slide" />
+					<div class="thumbnail-image">
+						<a class="foobox">
+							<img src="https://img.youtube.com/vi/eSLe4HuKuK0/maxresdefault.jpg" alt />
+						</a>
+
+						<div class="overlay">
+							<a class="play-icon foobox">
+								<i class="fa fa-play"></i>
+							</a>
+						</div>
+					</div>
 				</div>
 				<template slot="prevButton">
 					<i class="fas fa-chevron-left"></i>
@@ -91,43 +94,38 @@ export default {
 				navButtons: false
 			},
 			options2: {
-				autoplay: true,
+				autoplay: false,
 				autoplaySpeed: 5000,
 				centerMode: true,
 				dots: false,
 				navButtons: false,
-				slidesToShow: 3,
+				slidesToShow: 5,
 				responsive: [
 					{
+						breakpoint: 600,
 						settings: {
 							slidesToShow: 5
 						}
 					},
 					{
+						breakpoint: 1000,
 						settings: {
 							navButtons: true
 						}
 					}
 				]
 			},
-			slides: [
-				"https://images.unsplash.com/photo-1453831362806-3d5577f014a4?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&w=1600&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ",
-				"https://images.unsplash.com/photo-1496412705862-e0088f16f791?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&w=1600&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ",
-				"https://images.unsplash.com/photo-1506354666786-959d6d497f1a?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&w=1600&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ",
-				"https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&w=1600&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ",
-				"https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&w=1600&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ",
-				"https://images.unsplash.com/photo-1472926373053-51b220987527?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&w=1600&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ",
-				"https://images.unsplash.com/photo-1497534547324-0ebb3f052e88?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&w=1600&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ"
-			],
+			slides: [],
 			movie: {},
 			detailsIsActive: true,
-			videosIsActive: false,
+			videosIsActive: true,
 			imagesIsActive: false
 		};
 	},
 	mounted() {
 		this.asNavFor1.push(this.$refs.thumbnails);
 		this.asNavFor2.push(this.$refs.main);
+		this.videosIsActive = false;
 	},
 	created() {
 		this.fetchTodo();
@@ -168,6 +166,12 @@ export default {
 			} else {
 				this.detailsIsActive = true;
 			}
+		},
+		fetchVideos(){
+
+		},
+		thumbnailsUrl(){
+			
 		}
 	},
 	computed: {
@@ -189,6 +193,7 @@ export default {
 
 <style lang="scss">
 @import "node_modules/vue-agile/dist/VueAgile";
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/all.min.css");
 body {
 	font-family: "Century Gothic", "Lato", sans-serif;
 }
@@ -334,12 +339,56 @@ a {
 	font-family: "Lato", sans-serif;
 	font-weight: 300;
 	margin: 0 auto;
-	max-width: 900px;
+	max-width: 1200px;
 	padding: 30px;
+	.thumbnail-image {
+		position: relative;
+		display: inline-block;
+	}
+	img {
+		vertical-align: top;
+		max-width: 1200px;
+	}
+	.play-icon {
+		color: #fff;
+		text-align: center;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		-webkit-transform: translate(-50%, -50%);
+		-moz-transform: translate(-50%, -50%);
+		-ms-transform: translate(-50%, -50%);
+		-o-transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%);
+		border-radius: 50%;
+		padding: 20px;
+		line-height: 1;
+		opacity: 1;
+		font-size: 9em;
+	}
+	.thumbnails {
+		.play-icon {
+			font-size: 2em;
+		}
+	}
+
+	.play-icon:hover {
+		color: rgb(184, 184, 184);
+	}
+	@media only screen and (max-width: 400px) {
+		.thumbnail-image {
+			display: block;
+		}
+	}
 }
 
 .main {
-	margin-bottom: 30px;
+	margin-bottom: 5vh;
+}
+@media only screen and (max-width: 850px) {
+	.main {
+		margin-bottom: 10px;
+	}
 }
 
 .thumbnails {
@@ -405,11 +454,11 @@ a {
 
 // Slides styles
 .slide {
+	width: 600px;
 	align-items: center;
 	box-sizing: border-box;
 	color: #fff;
 	display: flex;
-	height: 450px;
 	justify-content: center;
 
 	&--thumbniail {
