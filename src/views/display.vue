@@ -39,9 +39,7 @@ export default {
 		};
 	},
 	created() {
-		this.$EventBus.$on("searchEvent", search => {
-			alert("yeeey am a life" + search);
-		});
+	
 		this.fetchTodo();
 	},
 	beforeUpdate() {

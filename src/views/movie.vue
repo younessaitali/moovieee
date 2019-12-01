@@ -5,7 +5,9 @@
 		<section :style="cssVars" class="et-hero-tabs">
 			<h1>{{ movie.original_title }}</h1>
 			<h3>
-				<span v-for="(genre, index) in movie.genres" :key="index">{{ genre.name }} |</span>
+				<span v-for="(genre, index) in movie.genres" :key="index"
+					>{{ genre.name }} |</span
+				>
 				{{ movie.release_date }}
 			</h3>
 			<div class="et-hero-tabs-container">
@@ -27,12 +29,22 @@
 				<h3>{{ movie.overview }}</h3>
 			</div>
 		</main>
-		<main class="movie-videos" v-show="videosIsActive">
-			<agile class="main" ref="main" :options="options1" :as-nav-for="asNavFor1">
-				<div class="slide" v-for="(slide, index) in slides" :key="index" :class="`slide--${index}`">
+		<main class="movie-videos" v-if="videosIsActive">
+			<agile
+				class="main"
+				ref="main"
+				:options="options1"
+				:as-nav-for="asNavFor1"
+			>
+				<div
+					class="slide"
+					v-for="(slide, index) in slides"
+					:key="index"
+					:class="`slide--${index}`"
+				>
 					<div class="thumbnail-image">
 						<a class="foobox">
-							<img src="https://img.youtube.com/vi/eSLe4HuKuK0/maxresdefault.jpg" alt />
+							<img :src="thumbnailsUrl(slide.key)" alt />
 						</a>
 
 						<div class="overlay">
@@ -43,7 +55,12 @@
 					</div>
 				</div>
 			</agile>
-			<agile class="thumbnails" ref="thumbnails" :options="options2" :as-nav-for="asNavFor2">
+			<agile
+				class="thumbnails"
+				ref="thumbnails"
+				:options="options2"
+				:as-nav-for="asNavFor2"
+			>
 				<div
 					class="slide slide--thumbniail"
 					v-for="(slide, index) in slides"
@@ -53,7 +70,7 @@
 				>
 					<div class="thumbnail-image">
 						<a class="foobox">
-							<img src="https://img.youtube.com/vi/eSLe4HuKuK0/maxresdefault.jpg" alt />
+							<img :src="thumbnailsUrl(slide.key)" alt />
 						</a>
 
 						<div class="overlay">
@@ -118,17 +135,17 @@ export default {
 			slides: [],
 			movie: {},
 			detailsIsActive: true,
-			videosIsActive: true,
+			videosIsActive: false,
 			imagesIsActive: false
 		};
 	},
 	mounted() {
 		this.asNavFor1.push(this.$refs.thumbnails);
 		this.asNavFor2.push(this.$refs.main);
-		this.videosIsActive = false;
 	},
 	created() {
 		this.fetchTodo();
+		this.fetchVideos();
 	},
 	methods: {
 		fetchTodo() {
@@ -167,11 +184,30 @@ export default {
 				this.detailsIsActive = true;
 			}
 		},
-		fetchVideos(){
-
+		fetchVideos() {
+			this.$http
+				.get(
+					`https://api.themoviedb.org/3/movie/${this.$route.params.id}/videos?api_key=${this.$api}&language=en-US
+`
+				)
+				.then(
+					response =>
+						// handle success
+						response.data
+				)
+				.then(data => {
+					data.results.forEach(result => {
+						this.slides.push(result);
+					});
+				})
+				.catch(function(error) {
+					// handle error
+					// custom console
+					console.log(error);
+				});
 		},
-		thumbnailsUrl(){
-			
+		thumbnailsUrl(key) {
+			return `https://img.youtube.com/vi/${key}/maxresdefault.jpg`;
 		}
 	},
 	computed: {
