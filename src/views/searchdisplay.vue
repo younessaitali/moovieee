@@ -154,7 +154,6 @@ export default {
 					response.data.genres
 			)
 			.then(data => {
-				console.log(data);
 				data.forEach(genre => {
 					let inputt = new Object();
 					inputt.text = genre.name;
@@ -162,10 +161,9 @@ export default {
 					this.genres.push(inputt);
 				});
 			})
-			.catch(function(error) {
+			.catch(function() {
 				// handle error
 				// custom console
-				console.log(error);
 			});
 	},
 	methods: {
@@ -188,15 +186,13 @@ export default {
 					this.movies = data;
 					this.pagination = true;
 				})
-				.catch(function(error) {
+				.catch(function() {
 					// handle error
 					// custom console
-					console.log(error);
 				});
 		},
 		urlPath() {
 			const key = this.$route.params.keys.replace(/_/g, "%20");
-			console.log(key);
 			return `3/search/movie?api_key=${
 				this.$api
 			}&language=en-US&query=${key}&page=${
@@ -220,10 +216,9 @@ export default {
 							response.data
 					)
 					.then(data => (this.movies = data))
-					.catch(function(error) {
+					.catch(function() {
 						// handle error
 						// custom console
-						console.log(error);
 					});
 			}
 		},

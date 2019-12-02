@@ -151,7 +151,6 @@ export default {
 					response.data.genres
 			)
 			.then(data => {
-				console.log(data);
 				data.forEach(genre => {
 					let inputt = new Object();
 					inputt.text = genre.name;
@@ -159,10 +158,9 @@ export default {
 					this.genres.push(inputt);
 				});
 			})
-			.catch(function(error) {
+			.catch(function() {
 				// handle error
 				// custom console
-				console.log(error);
 			});
 		for (let i = 1; i < 10; i++) {
 			let inputtt = new Object();
@@ -192,10 +190,9 @@ export default {
 					this.movies = data;
 					this.pagination = true;
 				})
-				.catch(function(error) {
+				.catch(function() {
 					// handle error
 					// custom console
-					console.log(error);
 				});
 		},
 		urlPath() {
@@ -225,10 +222,9 @@ export default {
 						response.data
 				)
 				.then(data => (this.movies = data))
-				.catch(function(error) {
+				.catch(function() {
 					// handle error
 					// custom console
-					console.log(error);
 				});
 		}
 	}

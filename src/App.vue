@@ -25,7 +25,6 @@ export default {
 		searchhandler(search) {
 			// this.$on("searchEvent", search => {
 			const key = search.trim().replace(/ /g, "_");
-			console.log("work" + key);
 			this.$router.push({ name: "search", params: { keys: key } });
 
 			// });
