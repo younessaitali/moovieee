@@ -60,4 +60,20 @@ export default {
 	padding-left: 2%;
 	padding-right: 3%;
 }
+<<<<<<< HEAD
+=======
+@media screen and (max-width: 800px) {
+	.searchbox {
+		display: flex;
+		input {
+			width: 50vw;
+		}
+		justify-content: center;
+		align-content: center;
+		padding-bottom: 2%;
+		padding-left: 0%;
+		padding-right: 10%;
+	}
+}
+>>>>>>> parent of 20bc228... Merge pull request #5 from younessaitali/pages
 </style>
