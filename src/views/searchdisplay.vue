@@ -78,7 +78,7 @@
 			</vs-col>
 		</vs-row>
 
-		<span @click="fetchTodo" class="paginationbutton">
+		<span @click="openLoading" class="paginationbutton">
 			<vs-pagination
 				:total="movies.total_pages"
 				v-model="currentx"
@@ -167,6 +167,13 @@ export default {
 			});
 	},
 	methods: {
+		openLoading() {
+			this.$vs.loading();
+			setTimeout(() => {
+				this.$vs.loading.close();
+			}, 2000);
+			this.fetchTodo();
+		},
 		fetchTodo() {
 			this.$http
 				.get(this.urlPath())

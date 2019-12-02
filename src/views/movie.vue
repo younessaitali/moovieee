@@ -23,6 +23,10 @@
 			</div>
 			<div class="description">
 				<h1>{{ movie.original_title }}</h1>
+				<p>
+					<vs-chip v-for="(genre, index) in movie.genres" :key="index">{{genre.name}}</vs-chip>
+				</p>
+				<br />
 				<h3>{{ movie.overview }}</h3>
 			</div>
 		</main>
@@ -142,7 +146,6 @@ export default {
 	created() {
 		this.fetchTodo();
 		this.fetchVideos();
-		this.fetchImages();
 	},
 	methods: {
 		fetchTodo() {
@@ -306,6 +309,9 @@ a {
 			font-size: 1rem;
 			opacity: 0.6;
 			padding: 1%;
+		}
+		p {
+			padding-left: 1%;
 		}
 	}
 }
