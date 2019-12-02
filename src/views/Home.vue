@@ -52,7 +52,7 @@ export default {
 <style >
 .hero {
 	position: relative;
-	background: url(http://www.philippefercha.com/cd/toggle-menu-bg.jpg)
+	background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/53819/dishonored-large.jpg)
 		no-repeat center center fixed;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;

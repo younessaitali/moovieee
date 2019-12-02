@@ -16,8 +16,8 @@
   			  </vs-col>
 		</vs-row>
 
-				<span @click="openLoading" class="paginationbutton">
-					<vs-pagination :total="movies.total_pages" v-model="currentx" :max="10" goto ></vs-pagination>
+				<span @click="openLoading" class="paginationbutton" >
+					<vs-pagination :total="movies.total_pages" v-if="pagination" v-model="currentx" :max="10" goto ></vs-pagination>
 				</span>
 	</div>
 </template>
@@ -29,6 +29,7 @@ export default {
 	},
 	data() {
 		return {
+			pagination: false,
 			movies: [],
 			currentx: 1,
 			watch: {
@@ -64,7 +65,10 @@ export default {
 						// handle success
 						response.data
 				)
-				.then(data => (this.movies = data))
+				.then(data => {
+					this.movies = data;
+					this.pagination = true;
+				})
 				.catch(function(error) {
 					// handle error
 					// custom console

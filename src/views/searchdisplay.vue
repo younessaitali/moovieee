@@ -11,10 +11,10 @@
 					v-model="search"
 				/>
 			</div>
-			<vs-collapse>
+			<vs-collapse type="margin">
 				<vs-collapse-item>
 					<div slot="header">
-						Advanced Search
+						<h4>Advanced Search</h4>
 					</div>
 					<div class="selectionMenu">
 						<vs-select
@@ -83,6 +83,7 @@
 				:total="movies.total_pages"
 				v-model="currentx"
 				:max="10"
+				v-if="pagination"
 				goto
 			></vs-pagination>
 		</span>
@@ -97,6 +98,7 @@ export default {
 	components: { moviecard },
 	data() {
 		return {
+			pagination: false,
 			search: "",
 			movies: [],
 			currentx: 1,
@@ -182,7 +184,10 @@ export default {
 						// handle success
 						response.data
 				)
-				.then(data => (this.movies = data))
+				.then(data => {
+					this.movies = data;
+					this.pagination = true;
+				})
 				.catch(function(error) {
 					// handle error
 					// custom console
@@ -255,5 +260,8 @@ export default {
 		min-width: 250px;
 		align-content: center;
 	}
+}
+h4 {
+	color: rgb(78, 81, 83);
 }
 </style>
