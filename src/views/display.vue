@@ -41,7 +41,6 @@ export default {
 	},
 	watch: {
 		$route() {
-			console.log(this.currentx);
 			this.currentx = 1;
 			this.fetchTodo();
 		}
@@ -69,10 +68,9 @@ export default {
 					this.movies = data;
 					this.pagination = true;
 				})
-				.catch(function(error) {
+				.catch(function() {
 					// handle error
 					// custom console
-					console.log(error);
 				});
 		},
 		urlPath() {
