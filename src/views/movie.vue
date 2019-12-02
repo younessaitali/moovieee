@@ -27,18 +27,7 @@
 					<vs-chip v-for="(genre, index) in movie.genres" :key="index">{{genre.name}}</vs-chip>
 				</p>
 				<br />
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 				<br />
->>>>>>> parent of 20bc228... Merge pull request #5 from younessaitali/pages
-=======
-				<br />
->>>>>>> parent of 122d37e... pages
-=======
-				<br />
->>>>>>> parent of 122d37e... pages
 				<h3>{{ movie.overview }}</h3>
 			</div>
 		</main>
@@ -311,22 +300,8 @@ a {
 		padding-top: 4rem;
 		flex-grow: 4;
 		text-align: left;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 		color: antiquewhite;
->>>>>>> parent of 20bc228... Merge pull request #5 from younessaitali/pages
-=======
-		color: antiquewhite;
->>>>>>> parent of 122d37e... pages
-=======
-		color: antiquewhite;
->>>>>>> parent of 122d37e... pages
-		h1 {
-			font-size: 1.5rem;
-			padding: 1%;
-		}
+		padding: 1%;
 		h3 {
 			font-size: 1rem;
 			opacity: 0.6;

@@ -76,9 +76,7 @@
 					</moviecard>
 				</div>
 			</vs-col>
-		</vs-row>
-
-		<span @click="openLoading" class="paginationbutton">
+				<div @click="openLoading" class="paginationbutton">
 			<vs-pagination
 				:total="movies.total_pages"
 				v-model="currentx"
@@ -86,7 +84,10 @@
 				v-if="pagination"
 				goto
 			></vs-pagination>
-		</span>
+		</div>
+		</vs-row>
+
+	
 	</div>
 </template>
 

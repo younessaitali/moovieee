@@ -14,11 +14,12 @@
 						></moviecard> 
 					</div>
   			  </vs-col>
+				<div @click="openLoading" class="paginationbutton" >
+					<vs-pagination :total="movies.total_pages" v-if="pagination" v-model="currentx" :max="10" goto ></vs-pagination>
+				</div>
 		</vs-row>
 
-				<span @click="openLoading" class="paginationbutton" >
-					<vs-pagination :total="movies.total_pages" v-if="pagination" v-model="currentx" :max="10" goto ></vs-pagination>
-				</span>
+				
 	</div>
 </template>
 <script>
