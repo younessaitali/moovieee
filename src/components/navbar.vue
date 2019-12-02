@@ -62,7 +62,10 @@ export default {
 }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 122d37e... pages
 =======
 >>>>>>> parent of 122d37e... pages
 @media screen and (max-width: 800px) {
@@ -79,7 +82,10 @@ export default {
 	}
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> parent of 20bc228... Merge pull request #5 from younessaitali/pages
+=======
+>>>>>>> parent of 122d37e... pages
 =======
 >>>>>>> parent of 122d37e... pages
 </style>

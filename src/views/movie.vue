@@ -29,9 +29,13 @@
 				<br />
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 				<br />
 >>>>>>> parent of 20bc228... Merge pull request #5 from younessaitali/pages
+=======
+				<br />
+>>>>>>> parent of 122d37e... pages
 =======
 				<br />
 >>>>>>> parent of 122d37e... pages
@@ -309,9 +313,13 @@ a {
 		text-align: left;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 		color: antiquewhite;
 >>>>>>> parent of 20bc228... Merge pull request #5 from younessaitali/pages
+=======
+		color: antiquewhite;
+>>>>>>> parent of 122d37e... pages
 =======
 		color: antiquewhite;
 >>>>>>> parent of 122d37e... pages
