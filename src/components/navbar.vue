@@ -61,7 +61,10 @@ export default {
 	padding-right: 3%;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 122d37e... pages
 @media screen and (max-width: 800px) {
 	.searchbox {
 		display: flex;
@@ -75,5 +78,8 @@ export default {
 		padding-right: 10%;
 	}
 }
+<<<<<<< HEAD
 >>>>>>> parent of 20bc228... Merge pull request #5 from younessaitali/pages
+=======
+>>>>>>> parent of 122d37e... pages
 </style>

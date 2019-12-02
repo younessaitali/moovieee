@@ -28,9 +28,13 @@
 				</p>
 				<br />
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 				<br />
 >>>>>>> parent of 20bc228... Merge pull request #5 from younessaitali/pages
+=======
+				<br />
+>>>>>>> parent of 122d37e... pages
 				<h3>{{ movie.overview }}</h3>
 			</div>
 		</main>
@@ -304,9 +308,13 @@ a {
 		flex-grow: 4;
 		text-align: left;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 		color: antiquewhite;
 >>>>>>> parent of 20bc228... Merge pull request #5 from younessaitali/pages
+=======
+		color: antiquewhite;
+>>>>>>> parent of 122d37e... pages
 		h1 {
 			font-size: 1.5rem;
 			padding: 1%;
