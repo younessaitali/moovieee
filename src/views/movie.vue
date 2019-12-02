@@ -27,6 +27,7 @@
 					<vs-chip v-for="(genre, index) in movie.genres" :key="index">{{genre.name}}</vs-chip>
 				</p>
 				<br />
+				<br />
 				<h3>{{ movie.overview }}</h3>
 			</div>
 		</main>
@@ -299,6 +300,7 @@ a {
 		padding-top: 4rem;
 		flex-grow: 4;
 		text-align: left;
+		color: antiquewhite;
 		h1 {
 			font-size: 1.5rem;
 			padding: 1%;
