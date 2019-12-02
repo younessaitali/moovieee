@@ -157,10 +157,9 @@ export default {
 						response.data
 				)
 				.then(data => (this.movie = data))
-				.catch(function(error) {
+				.catch(function() {
 					// handle error
 					// custom console
-					console.log(error);
 				});
 		},
 		urlPath() {
@@ -211,10 +210,9 @@ export default {
 						this.slides.push(slide);
 					});
 				})
-				.catch(function(error) {
+				.catch(function() {
 					// handle error
 					// custom console
-					console.log(error);
 				});
 		}
 	},
