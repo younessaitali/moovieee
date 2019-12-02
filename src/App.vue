@@ -3,29 +3,7 @@
 <template>
 	<div id="app">
 		<navbar v-on:searchEvent="searchhandler"></navbar>
-		<vs-breadcrumb
-			:items="
-   [
-     {
-       title: 'Dashboard',
-       url: 'dashboard'
-     },
-     {
-       title: 'Link 1',
-       url: 'link-1'
-     },
-     {
-       title: 'Link 2',
-       disabled: true
-     },
-     {
-       title: 'Active',
-       active: true
-     }
-   ]"
-			align="center"
-			v-show="breadcrumbhandler"
-		></vs-breadcrumb>
+
 		<!-- <div id="nav">
 			<router-link to="/">Home</router-link>
 		</div>-->
@@ -40,16 +18,9 @@ export default {
 		navbar
 	},
 	data() {
-		return {
-			breadcrumb: true
-		};
+		return {};
 	},
-	computed: {
-		breadcrumbhandler() {
-			if (this.$route.name === "home") return false;
-			else return true;
-		}
-	},
+	computed: {},
 	methods: {
 		searchhandler(search) {
 			// this.$on("searchEvent", search => {

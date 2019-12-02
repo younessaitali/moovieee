@@ -5,15 +5,12 @@
 		<section :style="cssVars" class="et-hero-tabs">
 			<h1>{{ movie.original_title }}</h1>
 			<h3>
-				<span v-for="(genre, index) in movie.genres" :key="index"
-					>{{ genre.name }} |</span
-				>
+				<span v-for="(genre, index) in movie.genres" :key="index">{{ genre.name }} |</span>
 				{{ movie.release_date }}
 			</h3>
 			<div class="et-hero-tabs-container">
 				<a class="et-hero-tab" @click="active_tab('details')">Details</a>
 				<a class="et-hero-tab" @click="active_tab('videos')">Videos</a>
-				<a class="et-hero-tab" @click="active_tab('images')">Images</a>
 			</div>
 		</section>
 
@@ -30,21 +27,24 @@
 			</div>
 		</main>
 		<main class="movie-videos" v-if="videosIsActive">
-			<agile
-				class="main"
-				ref="main"
-				:options="options1"
-				:as-nav-for="asNavFor1"
-			>
-				<div
-					class="slide"
-					v-for="(slide, index) in slides"
-					:key="index"
-					:class="`slide--${index}`"
-				>
-					<div class="thumbnail-image">
+			<agile class="main" ref="main" :options="options1" :as-nav-for="asNavFor1">
+				<div class="slide" v-for="(slide, index) in slides" :key="index" :class="`slide--${index}`">
+					<vs-popup
+						fullscreen
+						style="color:rgb(255,255,255)"
+						background-color="rgba(255,255,255,.6)"
+						background-color-popup="rgba(160, 160, 160, 0.31)"
+						title="background"
+						:active.sync="slide.popup"
+						v-if="slide.popup"
+					>
+						<div class="embed-container">
+							<iframe :src="slide.youtubelink" frameborder="0" allowfullscreen></iframe>
+						</div>
+					</vs-popup>
+					<div @click="slide.popup=true" class="thumbnail-image">
 						<a class="foobox">
-							<img :src="thumbnailsUrl(slide.key)" alt />
+							<img :src="slide.imgPath" alt />
 						</a>
 
 						<div class="overlay">
@@ -55,12 +55,7 @@
 					</div>
 				</div>
 			</agile>
-			<agile
-				class="thumbnails"
-				ref="thumbnails"
-				:options="options2"
-				:as-nav-for="asNavFor2"
-			>
+			<!-- <agile class="thumbnails" ref="thumbnails" :options="options2" :as-nav-for="asNavFor2">
 				<div
 					class="slide slide--thumbniail"
 					v-for="(slide, index) in slides"
@@ -70,7 +65,7 @@
 				>
 					<div class="thumbnail-image">
 						<a class="foobox">
-							<img :src="thumbnailsUrl(slide.key)" alt />
+							<img :src="slide.imgPath" alt />
 						</a>
 
 						<div class="overlay">
@@ -86,7 +81,7 @@
 				<template slot="nextButton">
 					<i class="fas fa-chevron-right"></i>
 				</template>
-			</agile>
+			</agile>-->
 		</main>
 	</div>
 </template>
@@ -106,33 +101,34 @@ export default {
 			asNavFor1: [],
 			asNavFor2: [],
 			options1: {
-				dots: false,
+				dots: true,
 				fade: true,
-				navButtons: false
+				navButtons: true
 			},
-			options2: {
-				autoplay: false,
-				autoplaySpeed: 5000,
-				centerMode: true,
-				dots: false,
-				navButtons: false,
-				slidesToShow: 5,
-				responsive: [
-					{
-						breakpoint: 600,
-						settings: {
-							slidesToShow: 5
-						}
-					},
-					{
-						breakpoint: 1000,
-						settings: {
-							navButtons: true
-						}
-					}
-				]
-			},
+			// options2: {
+			// 	autoplay: true,
+			// 	autoplaySpeed: 5000,
+			// 	centerMode: true,
+			// 	dots: false,
+			// 	navButtons: false,
+			// 	slidesToShow: 5,
+			// 	responsive: [
+			// 		{
+			// 			breakpoint: 600,
+			// 			settings: {
+			// 				slidesToShow: 5
+			// 			}
+			// 		},
+			// 		{
+			// 			breakpoint: 1000,
+			// 			settings: {
+			// 				navButtons: true
+			// 			}
+			// 		}
+			// 	]
+			// },
 			slides: [],
+			imgSlides: [],
 			movie: {},
 			detailsIsActive: true,
 			videosIsActive: false,
@@ -146,6 +142,7 @@ export default {
 	created() {
 		this.fetchTodo();
 		this.fetchVideos();
+		this.fetchImages();
 	},
 	methods: {
 		fetchTodo() {
@@ -187,7 +184,9 @@ export default {
 		fetchVideos() {
 			this.$http
 				.get(
-					`https://api.themoviedb.org/3/movie/${this.$route.params.id}/videos?api_key=${this.$api}&language=en-US
+					`3/movie/${this.$route.params.id}/videos?api_key=${
+						this.$api
+					}&language=en-US
 `
 				)
 				.then(
@@ -197,7 +196,16 @@ export default {
 				)
 				.then(data => {
 					data.results.forEach(result => {
-						this.slides.push(result);
+						let slide = new Object();
+						slide.imgPath = `https://img.youtube.com/vi/${
+							result.key
+						}/maxresdefault.jpg`;
+						slide.title = result.name;
+						slide.youtubelink = `https://www.youtube.com/embed/${
+							result.key
+						}`;
+						slide.popup = false;
+						this.slides.push(slide);
 					});
 				})
 				.catch(function(error) {
@@ -205,9 +213,6 @@ export default {
 					// custom console
 					console.log(error);
 				});
-		},
-		thumbnailsUrl(key) {
-			return `https://img.youtube.com/vi/${key}/maxresdefault.jpg`;
 		}
 	},
 	computed: {
@@ -371,12 +376,31 @@ a {
 		font-size: 1rem;
 	}
 }
+
+.embed-container {
+	position: relative;
+	padding-bottom: 56.25%;
+	height: 0;
+	overflow: hidden;
+	max-width: 100%;
+}
+.embed-container iframe,
+.embed-container object,
+.embed-container embed {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
 .movie-videos {
 	font-family: "Lato", sans-serif;
 	font-weight: 300;
 	margin: 0 auto;
 	max-width: 1200px;
 	padding: 30px;
+
 	.thumbnail-image {
 		position: relative;
 		display: inline-block;

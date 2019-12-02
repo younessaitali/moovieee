@@ -38,11 +38,14 @@ export default {
 			}
 		};
 	},
-	created() {
-	
-		this.fetchTodo();
+	watch: {
+		$route() {
+			console.log(this.currentx);
+			this.currentx = 1;
+			this.fetchTodo();
+		}
 	},
-	beforeUpdate() {
+	created() {
 		this.fetchTodo();
 	},
 	methods: {
@@ -63,7 +66,9 @@ export default {
 		},
 		urlPath() {
 			if (this.$route.name === "trending") {
-				return `3/trending/movie/week?api_key=${this.$api}`;
+				return `3/trending/movie/week?api_key=${this.$api}&page=${
+					this.currentx
+				}`;
 			}
 			if (this.$route.name === "discovery") {
 				return `3/discover/movie?sort_by=popularity.desc&page=${
